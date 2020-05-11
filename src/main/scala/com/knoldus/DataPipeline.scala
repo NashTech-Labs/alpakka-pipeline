@@ -16,7 +16,7 @@ import spray.json.{JsObject, JsString, JsonWriter}
 
 import scala.concurrent.Future
 
-object DataPipeline extends App{
+object DataPipeline extends App {
   implicit val system: ActorSystem = ActorSystem.create()
   val client: RestClient = RestClient.builder(new HttpHost("localhost", 9200, "http")).build()
 
@@ -45,9 +45,9 @@ object DataPipeline extends App{
     // Parsing the record as Person Object
     Json.parse(message.value()).as[Person]
   }
-    kafkaSource
-      .via(convert)
-      .via(FlowCassandra.written)
-      .via(flow)
-      .runWith(esSink2)
+  kafkaSource
+    .via(convert)
+    .via(FlowCassandra.written)
+    .via(flow)
+    .runWith(esSink2)
 }
